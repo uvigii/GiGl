@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="_sprintf_with_numbered_placeholders_1lf5Nr">"format me %2$s one more time %1$s"</string>
+  <string name="sprintf">"format me %1$s"</string>
+  <string name="array">"split the translation into multiples lines"</string>
+  <string name="_user_email_BsOGQ">"user.email"</string>
+  <string name="_user_name_leDLh">"user.name"</string>
+  <string name="lb_search">"търси"</string>
+  <string name="_ios_info_plist_NSLocationWhenInUseUsageDescription_ZpKiIF">"Гликемичен Индекс, Гликемично натоварване"</string>
+  <string name="_app_name_1k3Sbz">"ГиГл"</string>
+  <string name="app_name">"ГиГл"</string>
+  <string name="title_activity_kimera">"ГиГл"</string>
+  <string name="_lb_search_Z1XExM7">"search"</string>
+</resources>

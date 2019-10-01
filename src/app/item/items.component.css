@@ -1,0 +1,73 @@
+.action-bar {
+    background-color: #0E4375;
+    color: #F5C851;
+}
+
+.action-bar-title {
+    width: 100%;
+    padding:0;
+    margin: 0;
+    background-color: #0E4375;
+    color: #F5C851;
+}
+
+.search {
+    padding:0;
+    margin: 0;
+    background-color: #0E4375;
+    color: #F5C851; 
+}
+
+.list-group, .list-item {
+    background-color: #FFFFFF;
+}
+
+.header-linear {
+    background-color: #5BBC93;
+}
+
+.list-item-linear {
+    border-bottom-width: 1;
+    border-color: #0E4375;
+}
+
+.title-linear {
+    color: #0E4375;
+    padding: 0 0 0 10;
+}
+
+.price-linear {
+    color: #EF823F;
+    padding: 0 0 0 10;
+}
+
+.swipe-linear {
+    background-color: #0E4375;
+}
+
+.fav-linear {
+    margin: 30;
+}
+
+.list-item-grid {
+    margin: 1;
+}
+
+.list-item-grid-background {
+    background-color: #000000;
+    opacity: 0.6;
+}
+
+.title-grid {
+    color: #FFFFFF;
+    padding: 0 0 0 10;
+}
+
+.price-grid {
+    color: #EF823F;
+    padding: 0 0 5 10;
+}
+
+.fav-grid {
+    margin: 0 10 5 0;
+}

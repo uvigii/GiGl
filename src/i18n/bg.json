@@ -1,0 +1,17 @@
+{
+    "app.name": "ГиГл",
+    "ios.info.plist": {
+      "NSLocationWhenInUseUsageDescription": "Гликемичен Индекс, Гликемично натоварване"
+    },
+    "lb_search": "търси",
+    "user": {
+      "name": "user.name",
+      "email": "user.email"
+    },
+    "array": [
+      "split the translation into ",
+      "multiples lines"
+    ],
+    "sprintf": "format me %s",
+    "sprintf with numbered placeholders": "format me %2$s one more time %1$s"
+  }

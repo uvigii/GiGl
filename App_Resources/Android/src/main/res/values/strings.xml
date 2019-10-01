@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="_sprintf_with_numbered_placeholders_1lf5Nr">"format me %2$s one more time %1$s"</string>
+  <string name="sprintf">"format me %1$s"</string>
+  <string name="array">"split the translation into multiples lines"</string>
+  <string name="_user_email_BsOGQ">"user.email"</string>
+  <string name="_user_name_leDLh">"user.name"</string>
+  <string name="_lb_search_Z1XExM7">"search"</string>
+  <string name="_ios_info_plist_NSLocationWhenInUseUsageDescription_ZpKiIF">"Glycemic index, Glycemic load"</string>
+  <string name="_app_name_1k3Sbz">"GiGl"</string>
+  <string name="app_name">"GiGl"</string>
+  <string name="title_activity_kimera">"GiGl"</string>
+  <string name="lb_search">"lb_search"</string>
+</resources>
