@@ -1,0 +1,28 @@
+
+
+                <GridLayout rows="*" [height]="size">
+                    <RadPieChart allowAnimation="true" row="0">
+                        <PieSeries tkPieSeries 
+                            selectionMode="DataPoint" 
+                            seriesName="Pie"
+                            expandRadius="0.4" 
+                            outerRadiusFactor="0.7" 
+                            [items]="items"
+                            showPercentage="true"
+                            showLabels="{{showLegend}}" 
+                            valueProperty="Percentage" 
+                            legendLabel="Ingredient">
+                        </PieSeries>
+                        
+                        <RadLegendView tkPieLegend position="Right" title="Ingredient"
+                            offsetOrigin="TopRight" width="110" enableSelection="true" *ngIf="showLegend"></RadLegendView>
+                        
+                            <Palette tkPiePalette seriesName="Pie">        
+                                <PaletteEntry tkPiePaletteEntry fillColor="#2E86C1" strokeColor="#21618C"></PaletteEntry>
+                                <PaletteEntry tkPiePaletteEntry fillColor="#17A589" strokeColor="#117864"></PaletteEntry>
+                                <PaletteEntry tkPiePaletteEntry fillColor="#F1C40F" strokeColor="#B7950B"></PaletteEntry>
+                                <PaletteEntry tkPiePaletteEntry fillColor="#9B59B6" strokeColor="#76448A"></PaletteEntry>
+                                <PaletteEntry tkPiePaletteEntry fillColor="#C0392B" strokeColor="#7B241C"></PaletteEntry>                                
+                            </Palette>
+                    </RadPieChart>
+                </GridLayout>

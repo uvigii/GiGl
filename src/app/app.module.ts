@@ -4,10 +4,13 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
+import { ItemDetailComponent } from "./item/detail/item-detail.component";
+import { ProgressComponent } from "./item/progress/progress.component";
+import { PieComponent } from '~/app/item/pie/pie.component'
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 
 import { NativeScriptLocalizeModule } from "nativescript-localize/angular";
+import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -23,12 +26,15 @@ import { NativeScriptLocalizeModule } from "nativescript-localize/angular";
         NativeScriptModule,
         AppRoutingModule,
         NativeScriptUIListViewModule,
-        NativeScriptLocalizeModule
+        NativeScriptLocalizeModule,
+        NativeScriptUIChartModule
     ],
     declarations: [
         AppComponent,
         ItemsComponent,
-        ItemDetailComponent
+        ItemDetailComponent,
+        ProgressComponent,
+        PieComponent
     ],
     providers: [],
     schemas: [

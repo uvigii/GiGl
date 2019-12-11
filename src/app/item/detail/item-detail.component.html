@@ -1,0 +1,25 @@
+<ActionBar [title]="item['name_'+lang]" class="action-bar" background="{{bg}}"></ActionBar>
+<GridLayout columns="*" rows="*">
+        <StackLayout col="0" height="100%" background="{{bg}}" opacity="0.2">
+        </StackLayout>
+        <GridLayout  col="0" columns="*" rows="*,auto">
+            <StackLayout row="0">
+                    <PieChart [item]="item" [showLegend]="true" [size]="1024" ></PieChart>
+            </StackLayout>
+            <StackLayout row="1">
+                    <ProgressRating [index]="item.gi" [name]="'GI:' + item.gi"></ProgressRating> 
+                    <ProgressRating [index]="item.gl" [name]="'GL:' + item.gl"></ProgressRating> 
+                    <ProgressRating [index]="item.ii" [name]="'II:' + item.ii"></ProgressRating> 
+            </StackLayout>
+        </GridLayout>        
+</GridLayout>
+
+<!--
+<FlexboxLayout flexDirection="column" class="page">
+    <FlexboxLayout class="m-15">
+        <Label class="h2" [text]="item.id + '. '"></Label>
+        <Label class="h2" [text]="item.name"></Label>
+    </FlexboxLayout>
+    <Label class="h4" [text]="item.role"></Label>
+</FlexboxLayout>
+-->

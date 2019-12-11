@@ -4,12 +4,17 @@
 <ActionBar class="action-bar">
     <StackLayout orientation="horizontal" class="action-bar-title" width="100%">
             <SearchBar width="70%" hint="{{ 'lb.search' | L }}" [text]="searchPhrase" (textChange)="onTextChanged($event)" (clear)="onClear($event)" (submit)="onSubmit($event)" class="search"></SearchBar>
-            <Image src="~/app/images/fav-outline.png" height="30" (tap)="onFavoriteTap($event)" margin="0 5 0 5"></Image>
-            <Image  src="~/app/images/layout-grid.png" height="30" (tap)="onLayoutTap($event)" margin="0 5 0 5"></Image>
+            <Image src="~/app/images/fav-outline.png" height="30" (tap)="onFavoriteToggle($event)" margin="0 5 0 5"></Image>
+            <Image src="~/app/images/layout-grid.png" height="30" (tap)="onLayoutToggle($event)" margin="0 5 0 5"></Image>
     </StackLayout>
 </ActionBar>
 
+<StackLayout>
+<GridLayout rows="20" class="header-linear" *ngIf="isLinearTemplate">
+        <Label text="Swipe Right to Add to Favourites"
+            horizontalAlignment="center"></Label>
 
+</GridLayout>
 <GridLayout class="page" rows="*" cols="*,auto">
      
         
@@ -21,43 +26,48 @@
         </ng-template>
     </ListView>
     -->
+    
     <GridLayout tkExampleTitle tkToggleNavButton>
             <RadListView [items]="items" 
                     id="list-view"
                     swipeActions="true" 
                     selectionBehavior="None" 
-                                        
+                    separatorColor="transparent"
+                    [itemTemplateSelector]="getTemplate"                   
                     (itemSwipeProgressStarted)="onSwipeStarted($event)" 
-                >
-
-                <ng-template tkListItemTemplate let-item="item" key="linear">
-                    <GridLayout rows="100" columns="120, *, 80" class="list-item list-item-linear">
-                                <Image col="0" rowSpan="2" src="{{ image }}" stretch="aspectFit"></Image>
-                                <Label col="1" [text]="item.id" class="h3 title-linear"
-                                    textWrap="true" verticalAlignment="middle"></Label>
-                                <Label col="2" text="{{ price }}" class="h2 price-linear"
-                                    textWrap="true" verticalAlignment="middle"></Label>
+                >             
+                <ng-template tkListItemTemplate let-item="item" tkTemplateKey="linear">
+                    <GridLayout rows="100" columns="*" class="list-item list-item-linear">
+                        <GridLayout>
+                                <StackLayout col="0" height="100%" width="100%" opacity="0.2" background="{{ getBG(item.gi)}}" horizontalAlignment="center"  verticalAlignment="center">                                                
+                                        
+                                </StackLayout>
+                        </GridLayout>
+                        <GridLayout rows="*" columns="120,*,*">
+                            <Image col="0" src="{{'~/app/images/' + item.image }}" stretch="aspectFit" style="border-radius:50%" background="white"></Image>
+                            <StackLayout col="1" (tap)="onItemTap(item)">                                                                
+                                    <Label [text]="item['name_'+lang]" class="h2 title-linear"
+                                        textWrap="true" verticalAlignment="middle"></Label>
+                                    <ProgressRating [index]="item.gi" [name]="'GI:' + item.gi"></ProgressRating> 
+                                    <ProgressRating [index]="item.gl" [name]="'GL:' + item.gl"></ProgressRating>                                                                                                                                 
+                            </StackLayout>
+                            <StackLayout col="2">
+                                    <PieChart [item]="item" [showLegend]="false" [size]="256"></PieChart>
+                            </StackLayout>
+                        </GridLayout>                        
                     </GridLayout>
-            
-                    <!--
-                    <StackLayout orientation="vertical">
-                        <Label class="nameLabel" [text]="item.id"></Label>
-                        <Label class="descriptionLabel" [text]="item.description"></Label>
-                    </StackLayout>
-                    -->
                 </ng-template>
 
-                <ng-template tkListItemTemplate let-item="item" key="grid">
+                <ng-template tkGridItemTemplate let-item="item" tkTemplateKey="grid">                    
                     <GridLayout rows="100, 60" class="list-item list-item-grid">
-                            <Image row="0" src="{{ image }}" stretch="aspectFill" rowSpan="3" ></Image>
-                            <GridLayout row="1" rows="25, 35" columns="*, *" class="list-item-grid-background">
-                                <Label row="0" col="0" colSpan="2" text="{{ product }}" class="h3 title-grid" ></Label>
-                                <Label row="1" col="0" text="{{ price }}" class="h2 price-grid"></Label>
-                                <Image row="1" col="1" src="{{ favourite ? '~/images/fav-solid.png' : '~/images/fav-outline.png'}}" class="fav-grid" tap="{{ toggleFavourite }}" horizontalAlignment="right"></Image>
+                            <Image row="0" src="{{'~/app/images/' + item.image }}" stretch="aspectFill" rowSpan="3" (tap)="onItemTap(item)"></Image>
+                            <GridLayout row="1" rows="25, 35" columns="*, *" class="list-item-grid-background" background="{{ getBG(item.gi)}}">
+                                <Label row="0" col="0" colSpan="2" [text]="item['name_'+lang]" class="h3 title-grid" ></Label>
+                                <Label row="1" col="0" [text]="'GI:'+item.gi" class="h2 price-grid"></Label>
+                                <Image row="1" col="1" [src]="isItemFav(item.id) ? '~/app/images/fav-solid.png' : '~/app/images/fav-outline.png'" class="fav-grid" (tap)="onFavItemTap($event)" horizontalAlignment="right"></Image>
                             </GridLayout>
-                    </GridLayout>
+                    </GridLayout>                   
                 </ng-template>
-
                 
                 <GridLayout class="swipe-linear" *tkListItemSwipeTemplate columns="auto, *">
                     <StackLayout col="0" (tap)="onFavItemTap($event)">
@@ -65,50 +75,8 @@
                             <Label text="a" id="fav-text" class="swipe-linear price-linear"></Label>
                     </StackLayout>                   
                     
-                </GridLayout>
-                
-
+                </GridLayout>                
             </RadListView>
     </GridLayout>
-    <!--    
-    <RadListView id="list-view" class="list-group" [items]="items"
-    loaded="{{ onRadListViewLoaded }}" swipeActions="true"
-    itemTemplateSelector="{{ selectItemTemplate }}" separatorColor="transparent"
-    selectionBehavior="None" itemSwipeProgressStarted="onSwipeCellStarted"
-    pullToRefresh="true" pullToRefreshInitiated="{{ onPullToRefreshInitiated }}">
-    
-        <ng-template tkListItemTemplate let-item="item">  key="linear" 
-            <GridLayout rows="100" columns="120, *, 80" class="list-item list-item-linear">
-                <Image col="0" rowSpan="2" src="{{ image }}" stretch="aspectFit" ></Image>
-                <Label col="1" [text]="item.id" class="h3 title-linear"
-                    textWrap="true" verticalAlignment="middle" ></Label>
-                <Label col="2" text="{{ price }}" class="h2 price-linear"
-                    textWrap="true" verticalAlignment="middle" ></Label>
-            </GridLayout>
-        </ng-template>
-        -->
-        <!--
-        <ng-template tkListItemTemplate let-item="item" key="grid">
-            <GridLayout rows="100, 60" class="list-item list-item-grid">
-                <Image row="0" src="{{ image }}" stretch="aspectFill"
-                    rowSpan="3" ></Image>
-                <GridLayout row="1" rows="25, 35" columns="*, *"
-                    class="list-item-grid-background">
-                    <Label row="0" col="0" colSpan="2" text="{{ product }}"
-                        class="h3 title-grid" ></Label>
-                    <Label row="1" col="0" text="{{ price }}" class="h2 price-grid" ></Label>
-                    <Image row="1" col="1" src="{{ favourite ? '~/images/fav-solid.png' : '~/images/fav-outline.png'}}"
-                        class="fav-grid" tap="{{ toggleFavourite }}"
-                        horizontalAlignment="right" ></Image>
-                </GridLayout>
-            </GridLayout>
-        </ng-template>    
-   
-        <GridLayout *tkListItemSwipeTemplate class="swipe-linear">
-            <Image src="{{ favourite ? '~/images/fav-solid.png' : '~/images/fav-outline.png'}}"
-                class="fav-linear" tap="{{ toggleFavourite }}"
-                horizontalAlignment="left" margin="30"></Image>
-        </GridLayout>
-        -->
-
 </GridLayout>
+</StackLayout>

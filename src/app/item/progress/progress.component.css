@@ -1,0 +1,15 @@
+.progressbar {
+    height: 22;
+    margin: 4;
+    border-radius: 4;
+ 
+}
+.progressbar-value {
+    background: #337ab7;
+    border-radius: 4;
+}
+
+.gi {
+    font-size: 20em;
+    horizontal-align: center;
+}

@@ -3,7 +3,7 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { Routes } from "@angular/router";
 
 import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
+import { ItemDetailComponent } from "./item/detail/item-detail.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/items", pathMatch: "full" },

@@ -4,7 +4,11 @@ import { ItemService } from "../shared/item.service";
 import { BackendService } from "../shared/backend.service";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { RadListView, ListViewGridLayout, ListViewLinearLayout } from "nativescript-ui-listview";
+import { RouterExtensions } from "nativescript-angular/router";
+import { NavigationExtras } from "@angular/router";
+import { Funs } from '~/app/shared/funs'
 
+let isLayoutOne: boolean = true;
 
 @Component({
     selector: "ns-items",
@@ -16,14 +20,16 @@ export class ItemsComponent implements OnInit {
     public favtems: Array <any>;  
     public lang:    string;
     public isFavourite: boolean = false;
-    public isLayoutOne: boolean = false;
-    public curItemFavIcon: string = "~/app/images/fav-outline.png"; 
+    public isLinearTemplate: boolean = true;
+    public curItemFavIcon: string = "~/app/images/fav-outline.png";
+    public template: string = "linear";
+    public query: string = ""; 
 
-    constructor(private itemService: ItemService, private bs: BackendService) {     
+    constructor(private itemService: ItemService, private bs: BackendService, private routerExtensions: RouterExtensions) {     
             this.items = new ObservableArray();
             this.favtems = bs.getFavorite();
             this.lang = bs.getLang();
-            this.queryItems("");                      
+            this.queryItems();                               
     }
 
     ngOnInit(): void {
@@ -34,14 +40,16 @@ export class ItemsComponent implements OnInit {
         let searchBar = <SearchBar>args.object;
         console.log("SearchBar text changed! New value: " + searchBar.text);
         if (searchBar.text) {
-            this.queryItems(searchBar.text);                        
+            this.query = searchBar.text;
+            this.queryItems();                        
         }
         
     }
 
-    public queryItems(key:string){
+    public queryItems(){
 
-        this.bs.searchItems(key, this.isFavourite ? "" : "").then((res) => {                    
+        console.dir(this.favtems.join(','));
+        this.bs.searchItems(this.query, this.isFavourite ? this.favtems.join(',') : "").then((res) => {                    
             this.items = new ObservableArray(res);                   
         })
         .catch((err) => {
@@ -53,7 +61,8 @@ export class ItemsComponent implements OnInit {
     public onClear(args) {
         let searchBar = <SearchBar>args.object;
         searchBar.text = "";
-        this.queryItems("");
+        this.query="";
+        this.queryItems();
     }
 
     public onFavItemTap(args){
@@ -64,10 +73,10 @@ export class ItemsComponent implements OnInit {
             this.favtems.push(args.object.bindingContext.id);
         }        
         this.bs.setFavorite(this.favtems);
-        this.queryItems("");
+        this.queryItems();
     }
 
-    public onFavoriteTap(args) {
+    public onFavoriteToggle(args) {
         const image = args.object;
         this.isFavourite = ! this.isFavourite;
         if ( ! this.isFavourite){
@@ -75,41 +84,29 @@ export class ItemsComponent implements OnInit {
         }else{
             image.src = "~/app/images/fav-solid.png";
         }
-        console.dir(this.isFavourite);
-        /*
-        const image = args.object;
-        //const listView = <RadListView>image.page.getViewById("list-view");
-        const itemData = image.bindingContext;
-        if (itemData.favourite) {
-            image.src = "~/app/images/fav-outline.png";
-            itemData.favourite = false;
-        } else {
-            image.src = "~/app/images/fav-solid.png";
-            itemData.favourite = true;
-        }
-
-        //listView.notifySwipeToExecuteFinished();
-        */
+        this.queryItems();
     }
 
-    public onLayoutTap(args){
+    public onLayoutToggle(args){
         const image = args.object;
         const listView = <RadListView>image.page.getViewById("list-view");
 
-        this.isLayoutOne = ! this.isLayoutOne;
-        if ( this.isLayoutOne){
+        isLayoutOne = ! isLayoutOne;
+        this.isLinearTemplate = isLayoutOne;
+        if ( isLayoutOne){
             listView.swipeActions = true;
             let Layout = new ListViewLinearLayout();
             listView.listViewLayout =  Layout;
-            image.src = "~/app/images/layout-linear.png";
+            image.src = "~/app/images/layout-grid.png";
         }else{
             listView.swipeActions = false;
             let Layout = new ListViewGridLayout();
+            Layout.spanCount = 2;
             listView.listViewLayout =  Layout;
-            image.src = "~/app/images/layout-grid.png";
+            image.src = "~/app/images/layout-linear.png";            
         }
         
-        console.dir(this.isLayoutOne);
+        //console.dir(isLayoutOne);
     }
 
     public onSwipeStarted(event) {
@@ -127,5 +124,44 @@ export class ItemsComponent implements OnInit {
         }       
         
     }
+
+    public getTemplate(item, index, items):string {
+        return isLayoutOne ? "linear" : "grid";
+    }
+
+    public isItemFav(id:number):boolean{
+        if(this.favtems.indexOf(id) != -1){
+            return true            
+        }else{            
+            return false;
+        }        
+    }
     
+
+    public getBG(index:number):string{
+
+        return Funs.getColorFromIndex(index);
+
+    }
+
+    public onItemTap(item){
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                "item": JSON.stringify( item),
+                "lang": JSON.stringify( this.lang),
+                "bg":   JSON.stringify(this.getBG(item.gi))
+            }
+          };
+        this.routerExtensions.navigate(["/item/" + item.id, {
+            animated: true,
+            transition: {
+                name: "flip", //"fade"
+                duration: 580,
+                curve: "easeIn"
+            
+            }
+          }
+          ], navigationExtras);
+        
+    }
 }
